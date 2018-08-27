@@ -123,20 +123,20 @@ IF(QBC_ICON_OUTPUT_NAME)
 ENDIF(QBC_ICON_OUTPUT_NAME)
 
 ## CONFIG.XML
-CONFIGURE_FILE(${CMAKE_CURRENT_SOURCE_DIR}/config.xml.in ${CMAKE_CURRENT_BINARY_DIR}/config/config.xml @ONLY)
+CONFIGURE_FILE(${CMAKE_CURRENT_SOURCE_DIR}/src/config.xml.in ${CMAKE_CURRENT_BINARY_DIR}/config/config.xml @ONLY)
 
 ## PACKAGE.XML
-CONFIGURE_FILE(${CMAKE_CURRENT_SOURCE_DIR}/package.xml.in ${CMAKE_CURRENT_BINARY_DIR}/packages/${QBC_PACKAGE}/meta/package.xml @ONLY)
+CONFIGURE_FILE(${CMAKE_CURRENT_SOURCE_DIR}/src/package.xml.in ${CMAKE_CURRENT_BINARY_DIR}/packages/${QBC_PACKAGE}/meta/package.xml @ONLY)
 
-CONFIGURE_FILE(${CMAKE_CURRENT_SOURCE_DIR}/desktopcheckboxform.ui ${CMAKE_CURRENT_BINARY_DIR}/packages/${QBC_PACKAGE}/meta/desktopcheckboxform.ui COPYONLY)
-CONFIGURE_FILE(${CMAKE_CURRENT_SOURCE_DIR}/startmenucheckboxform.ui ${CMAKE_CURRENT_BINARY_DIR}/packages/${QBC_PACKAGE}/meta/startmenucheckboxform.ui COPYONLY)
-CONFIGURE_FILE(${CMAKE_CURRENT_SOURCE_DIR}/registerfilecheckboxform.ui ${CMAKE_CURRENT_BINARY_DIR}/packages/${QBC_PACKAGE}/meta/registerfilecheckboxform.ui COPYONLY)
+CONFIGURE_FILE(${CMAKE_CURRENT_SOURCE_DIR}/src/desktopcheckboxform.ui ${CMAKE_CURRENT_BINARY_DIR}/packages/${QBC_PACKAGE}/meta/desktopcheckboxform.ui COPYONLY)
+CONFIGURE_FILE(${CMAKE_CURRENT_SOURCE_DIR}/src/startmenucheckboxform.ui ${CMAKE_CURRENT_BINARY_DIR}/packages/${QBC_PACKAGE}/meta/startmenucheckboxform.ui COPYONLY)
+CONFIGURE_FILE(${CMAKE_CURRENT_SOURCE_DIR}/src/registerfilecheckboxform.ui ${CMAKE_CURRENT_BINARY_DIR}/packages/${QBC_PACKAGE}/meta/registerfilecheckboxform.ui COPYONLY)
 
 ## INSTALLSCRIPT.JS
 SET(QBC_TARGET_DIR_JS @TargetDir@)
 SET(QBC_START_MENU_DIR_JS @StartMenuDir@)
 SET(QBC_DESKTOP_DIR_JS @DesktopDir@)
-CONFIGURE_FILE(${CMAKE_CURRENT_SOURCE_DIR}/installscript.qs.in ${CMAKE_CURRENT_BINARY_DIR}/packages/${QBC_PACKAGE}/meta/installscript.qs @ONLY)
+CONFIGURE_FILE(${CMAKE_CURRENT_SOURCE_DIR}/src/installscript.qs.in ${CMAKE_CURRENT_BINARY_DIR}/packages/${QBC_PACKAGE}/meta/installscript.qs @ONLY)
 
 # ────────── BINARY CREATOR ────────────────
 
