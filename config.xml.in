@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<Installer>
+    <Name>@QBC_NAME@</Name>
+    <Version>@QBC_VERSION@</Version>
+    <Title>@QBC_TITLE@</Title>
+    <Publisher>@QBC_PUBLISHER@</Publisher>
+    <ProductUrl>@QBC_PRODUCT_URL@</ProductUrl>
+    <InstallerWindowIcon>@QBC_ICON_OUTPUT_NAME_WE@</InstallerWindowIcon>
+    <InstallerApplicationIcon>@QBC_ICON_OUTPUT_NAME_WE@</InstallerApplicationIcon>
+    <RunProgram>@QBC_RUN_PROGRAM@</RunProgram>
+    <StartMenuDir>@QBC_START_MENU@</StartMenuDir>
+    <TargetDir>@QBC_TARGET_DIR@</TargetDir>
+</Installer>

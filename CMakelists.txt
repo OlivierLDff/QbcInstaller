@@ -1,0 +1,164 @@
+#
+#	CMake script by Olivier Le Doeuff
+#	This is a wrapper around the binaryCreator from qt framework
+#	Ereimul All Right Reserved 2018 (C)
+#
+## CMAKE INPUT
+#
+#	- QBC_DEPENDS_TARGET : Target for which it will create an installer
+#	- QBC_ADDITIONNAL_DEPENDS
+#	- QBC_PROJECT_NAME : Name of QtBinaryCreator project in build system, default is QtBinaryCreator
+#	- QBC_ALL : Does the project depends on the make all
+#	- QBC_NAME : Name of the product for which the installer will be created
+# 	- QBC_VERSION : Product version
+# 	- QBC_TITLE : Installer Title (for example Install Product)
+# 	- QBC_PUBLISHER : Product publisher
+# 	- QBC_PRODUCT_URL : Product URL
+# 	- QBC_ICON_PATH : Icon path (it will be copied)
+#	- QBC_START_MENU : Start Menu name, this is optionnal it will be set by default to publisher
+#	- QT_INSTALLER_FRAMEWORK_DIR : Path to binary creator, can have default values for windows for example where binary is in repository
+#	- QBC_RELEASE_DATE : Release Date, will be set to now if not specified
+#	- QBC_VERBOSE : Print verbose
+#
+#	- QBC_PACKAGE : Package name in form org.com.product
+#	- QBC_PACKAGE_NAME : Package Name, default to QBC_NAME
+#	- QBC_PACKAGE_VERSION : Package Version
+#	- QBC_PACKAGE_DEFAULT : Default package to true
+#
+## CMAKE OUTPUT
+#
+#	- QBC_OUTPUT_PATH : /path/to/installer.exe
+#	
+
+CMAKE_MINIMUM_REQUIRED( VERSION 3.1.0 )
+
+# ────────── VARIABLES ────────────────
+
+SET( QBC_PROJECT_NAME QtBinaryCreator CACHE STRING "Target Name" )
+
+PROJECT( ${QBC_PROJECT_NAME} )
+
+SET( QBC_ALL ON CACHE BOOL "Should it be included in the all build" )
+SET( QBC_VERBOSE ON CACHE BOOL "Verbose" )
+
+SET( QBC_NAME ${QBC_DEPENDS_TARGET} CACHE STRING "Installer Name" )
+SET( QBC_VERSION "1.0.0" CACHE STRING "Installer Product Version" )
+SET( QBC_TITLE ${QBC_NAME} CACHE STRING "Installer Title" )
+SET( QBC_PUBLISHER "Publisher" CACHE STRING "Installer Publisher" )
+SET( QBC_PRODUCT_URL  "www.product.com" CACHE STRING "Product URL"  )
+SET( QBC_START_MENU ${QBC_PUBLISHER} CACHE STRING "Start Menu Section" )
+
+IF( CMAKE_SIZEOF_VOID_P EQUAL 8 )
+	SET( QBC_TARGET_DIR @ApplicationsDirX64@/${QBC_NAME} )
+	SET(QBS_X X64)
+ELSE( CMAKE_SIZEOF_VOID_P EQUAL 8 )
+	SET( QBC_TARGET_DIR @ApplicationsDirX86@/${QBC_NAME} )
+	SET(QBS_X X86)
+ENDIF( CMAKE_SIZEOF_VOID_P EQUAL 8 )
+
+IF( QBC_ICON_PATH )
+	GET_FILENAME_COMPONENT( QBC_ICON_OUTPUT_NAME ${QBC_ICON_PATH} NAME )
+	GET_FILENAME_COMPONENT( QBC_ICON_OUTPUT_NAME_WE ${QBC_ICON_PATH} NAME_WE )
+	GET_FILENAME_COMPONENT( QBC_ICON_OUTPUT_EXT ${QBC_ICON_PATH} EXT )
+ENDIF( QBC_ICON_PATH )
+
+SET( QBC_PACKAGE_NAME ${QBC_NAME} CACHE STRING "Package Name" )
+SET( QBC_PACKAGE_VERSION ${QBC_VERSION} CACHE STRING "Package Product Version" )
+SET( QBC_PACKAGE_DEFAULT ON CACHE BOOL "Is the package tick by default" )
+SET( QBC_FILE_EXTENSION "" CACHE STRING "File extension for file association (only supported on windows)" )
+
+SET( QBC_RUN_PROGRAM @TargetDir@/${QBC_PACKAGE_NAME} )
+
+SET( QBC_PACKAGE ${QBC_PUBLISHER}.${QBC_NAME}.${QBC_PACKAGE_NAME} CACHE STRING "Package name for OS package manager" )
+IF(NOT QBC_RELEASE_DATE)
+	SET(QBC_RELEASE_DATE)
+	STRING(TIMESTAMP QBC_RELEASE_DATE "%Y-%m-%d")
+ENDIF(NOT QBC_RELEASE_DATE)
+
+IF(WIN32)
+SET( QT_INSTALLER_FRAMEWORK_DIR ${CMAKE_CURRENT_SOURCE_DIR}/bin/Win32 CACHE STRING "Path to binaryCreator" )
+ELSE(WIN32)
+SET( QT_INSTALLER_FRAMEWORK_DIR "" CACHE STRING "Path to binaryCreator" )
+ENDIF(WIN32)
+
+# ────────── PRINT STATUS ────────────────
+IF(QBC_VERBOSE)
+MESSAGE( STATUS "Qt Binary Creator configuration" )
+
+MESSAGE( STATUS "QBC_NAME                    : " ${QBC_NAME} )
+MESSAGE( STATUS "QBC_VERSION                 : " ${QBC_VERSION} )
+MESSAGE( STATUS "QBC_FILE_EXTENSION          : " ${QBC_FILE_EXTENSION} )
+MESSAGE( STATUS "QBC_TITLE                   : " ${QBC_TITLE} )
+MESSAGE( STATUS "QBC_PUBLISHER               : " ${QBC_PUBLISHER} )
+MESSAGE( STATUS "QBC_PRODUCT_URL             : " ${QBC_PRODUCT_URL} )
+MESSAGE( STATUS "QBC_START_MENU              : " ${QBC_START_MENU} )
+IF(QBC_ICON_OUTPUT_NAME)
+MESSAGE( STATUS "QBC_ICON_OUTPUT_NAME        : " ${QBC_ICON_OUTPUT_NAME} )
+MESSAGE( STATUS "QBC_ICON_OUTPUT_NAME Extension (be sure it match .ico for windows, .png for linux and .icns for mac) : " ${QBC_ICON_OUTPUT_EXT} )
+ENDIF(QBC_ICON_OUTPUT_NAME)
+MESSAGE( STATUS "QBC_PACKAGE                 : " ${QBC_PACKAGE} )
+MESSAGE( STATUS "QBC_PACKAGE_NAME            : " ${QBC_PACKAGE_NAME} )
+MESSAGE( STATUS "QBC_PACKAGE_VERSION         : " ${QBC_PACKAGE_VERSION} )
+MESSAGE( STATUS "QBC_PACKAGE_DEFAULT         : " ${QBC_PACKAGE_DEFAULT} )
+MESSAGE( STATUS "QBC_RELEASE_DATE            : " ${QBC_RELEASE_DATE} )
+
+MESSAGE( STATUS "QBC_DEPENDS_TARGET          : " ${QBC_DEPENDS_TARGET} )
+MESSAGE( STATUS "QBC_ALL                     : " ${QBC_ALL} )
+IF(NOT QBC_DEPENDS_TARGET)
+	MESSAGE(FATAL_ERROR "Please set QBC_DEPENDS_TARGET, QBS need to depends on a target to deploy the binary directory of the target")
+ENDIF(NOT QBC_DEPENDS_TARGET)
+MESSAGE( STATUS "QT_INSTALLER_FRAMEWORK_DIR  : " ${QT_INSTALLER_FRAMEWORK_DIR} )
+IF(NOT QT_INSTALLER_FRAMEWORK_DIR)
+	MESSAGE(FATAL_ERROR "Please set QT_INSTALLER_FRAMEWORK_DIR to the path to binarycreator (like C:/Qt/Tools/QtInstallerFramework/3.0)")
+ENDIF(NOT QT_INSTALLER_FRAMEWORK_DIR)
+MESSAGE( STATUS "Final Output Name           : " ${QBC_NAME}Installer${QBS_X} )
+MESSAGE( STATUS "Final Output Dir            : " ${CMAKE_CURRENT_BINARY_DIR} )
+ENDIF(QBC_VERBOSE)
+
+# ────────── CONFIGURE FILES ────────────────
+
+## ICON
+IF(QBC_ICON_OUTPUT_NAME)
+	CONFIGURE_FILE( ${QBC_ICON_PATH} ${CMAKE_CURRENT_BINARY_DIR}/config/${QBC_ICON_OUTPUT_NAME} COPYONLY )
+ENDIF(QBC_ICON_OUTPUT_NAME)
+
+## CONFIG.XML
+CONFIGURE_FILE(${CMAKE_CURRENT_SOURCE_DIR}/config.xml.in ${CMAKE_CURRENT_BINARY_DIR}/config/config.xml @ONLY)
+
+## PACKAGE.XML
+CONFIGURE_FILE(${CMAKE_CURRENT_SOURCE_DIR}/package.xml.in ${CMAKE_CURRENT_BINARY_DIR}/packages/${QBC_PACKAGE}/meta/package.xml @ONLY)
+
+CONFIGURE_FILE(${CMAKE_CURRENT_SOURCE_DIR}/desktopcheckboxform.ui ${CMAKE_CURRENT_BINARY_DIR}/packages/${QBC_PACKAGE}/meta/desktopcheckboxform.ui COPYONLY)
+CONFIGURE_FILE(${CMAKE_CURRENT_SOURCE_DIR}/startmenucheckboxform.ui ${CMAKE_CURRENT_BINARY_DIR}/packages/${QBC_PACKAGE}/meta/startmenucheckboxform.ui COPYONLY)
+CONFIGURE_FILE(${CMAKE_CURRENT_SOURCE_DIR}/registerfilecheckboxform.ui ${CMAKE_CURRENT_BINARY_DIR}/packages/${QBC_PACKAGE}/meta/registerfilecheckboxform.ui COPYONLY)
+
+## INSTALLSCRIPT.JS
+SET(QBC_TARGET_DIR_JS @TargetDir@)
+SET(QBC_START_MENU_DIR_JS @StartMenuDir@)
+SET(QBC_DESKTOP_DIR_JS @DesktopDir@)
+CONFIGURE_FILE(${CMAKE_CURRENT_SOURCE_DIR}/installscript.qs.in ${CMAKE_CURRENT_BINARY_DIR}/packages/${QBC_PACKAGE}/meta/installscript.qs @ONLY)
+
+# ────────── BINARY CREATOR ────────────────
+
+IF(QBC_ALL)
+	SET(_QBC_ALL ALL)
+ENDIF(QBC_ALL)
+IF(QBC_VERBOSE)
+	SET(_QBC_VERBOSE -v)
+ENDIF(QBC_VERBOSE)
+
+SET( QBC_OUTPUT_PATH ${CMAKE_CURRENT_BINARY_DIR}/${QBC_NAME}Installer${QBS_X} CACHE STRING "Output installer" )
+
+ADD_CUSTOM_TARGET( ${QBC_NAME}Installer${QBS_X}
+	${_QBC_ALL}
+	DEPENDS ${QBC_DEPENDS_TARGET} ${QBC_ADDITIONNAL_DEPENDS}
+	COMMAND echo Copy $<TARGET_FILE_DIR:${QBC_DEPENDS_TARGET}> to ${CMAKE_CURRENT_BINARY_DIR}/packages/${QBC_PACKAGE}/data
+	COMMAND ${CMAKE_COMMAND} -E copy_directory $<TARGET_FILE_DIR:${QBC_DEPENDS_TARGET}> ${CMAKE_CURRENT_BINARY_DIR}/packages/${QBC_PACKAGE}/data
+	COMMAND echo Launch binarycreator
+	COMMAND ${QT_INSTALLER_FRAMEWORK_DIR}/binarycreator
+		-c ${CMAKE_CURRENT_BINARY_DIR}/config/config.xml
+		-p ${CMAKE_CURRENT_BINARY_DIR}/packages
+		${_QBC_VERBOSE}
+		${QBC_OUTPUT_PATH}
+	)
+

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Package>
+    <DisplayName>@QBC_PACKAGE_NAME@</DisplayName>
+    <Description>Install @QBC_PACKAGE_NAME@.</Description>
+    <Version>@QBC_PACKAGE_VERSION@</Version>
+    <ReleaseDate>@QBC_RELEASE_DATE@</ReleaseDate>
+    <Default>true</Default>
+    <Script>installscript.qs</Script>
+    <UserInterfaces>
+        <UserInterface>startmenucheckboxform.ui</UserInterface>
+        <UserInterface>desktopcheckboxform.ui</UserInterface>
+        <UserInterface>registerfilecheckboxform.ui</UserInterface>
+    </UserInterfaces>
+</Package>

@@ -1,0 +1,97 @@
+/****************************************************************************
+**
+** Copyright (C) 2017 The Qt Company Ltd.
+** Contact: https://www.qt.io/licensing/
+**
+** This file is part of the FOO module of the Qt Toolkit.
+**
+** $QT_BEGIN_LICENSE:GPL-EXCEPT$
+** Commercial License Usage
+** Licensees holding valid commercial Qt licenses may use this file in
+** accordance with the commercial license agreement provided with the
+** Software or, alternatively, in accordance with the terms contained in
+** a written agreement between you and The Qt Company. For licensing terms
+** and conditions see https://www.qt.io/terms-conditions. For further
+** information use the contact form at https://www.qt.io/contact-us.
+**
+** GNU General Public License Usage
+** Alternatively, this file may be used under the terms of the GNU
+** General Public License version 3 as published by the Free Software
+** Foundation with exceptions as appearing in the file LICENSE.GPL3-EXCEPT
+** included in the packaging of this file. Please review the following
+** information to ensure the GNU General Public License requirements will
+** be met: https://www.gnu.org/licenses/gpl-3.0.html.
+**
+** $QT_END_LICENSE$
+**
+****************************************************************************/
+//http://doc.qt.io/qtinstallerframework/scripting.html
+
+function Component()
+{
+	component.loaded.connect(this, addRegisterFileCheckBox);
+}
+
+// called as soon as the component was loaded
+addRegisterFileCheckBox = function()
+{
+    // don't show when updating or uninstalling
+    if (installer.isInstaller()) {
+    	if("@QBC_FILE_EXTENSION@" != "")
+    	{
+    		console.log("Add RegisterFileCheckBoxForm");
+    		installer.addWizardPageItem(component, "RegisterFileCheckBoxForm", QInstaller.TargetDirectory);
+    		component.userInterface("RegisterFileCheckBoxForm").RegisterFileCheckBox.text =
+    		component.userInterface("RegisterFileCheckBoxForm").RegisterFileCheckBox.text + "@QBC_FILE_EXTENSION@"; 	
+    	}
+
+    	if (systemInfo.productType === "windows") {
+    		console.log("Add DesktopCheckBoxForm");
+    		installer.addWizardPageItem(component, "DesktopCheckBoxForm", QInstaller.TargetDirectory);
+    		console.log("Add StartMenuCheckBoxForm");
+    		installer.addWizardPageItem(component, "StartMenuCheckBoxForm", QInstaller.TargetDirectory);
+    	}
+    }
+}
+
+
+Component.prototype.createOperations = function()
+{
+	component.createOperations();
+
+	if("@QBC_FILE_EXTENSION@" != "")
+	{
+		if (installer.value("os") === "win") 
+		{
+
+			var isRegisterFileChecked = component.userInterface("RegisterFileCheckBoxForm").RegisterFileCheckBox.checked;
+			if(isRegisterFileChecked)
+			{
+				console.log("Register type @QBC_FILE_EXTENSION@ with app @QBC_TARGET_DIR_JS@/@QBC_PACKAGE_NAME@.exe");
+				component.addOperation("RegisterFileType",
+					"@QBC_FILE_EXTENSION@",
+					"@QBC_TARGET_DIR_JS@\\@QBC_PACKAGE_NAME@.exe\ \"%1\"",
+					"@QBC_PACKAGE_NAME@ file type",
+					"text/plain",
+					"@QBC_TARGET_DIR_JS@/@QBC_PACKAGE_NAME@.exe,0",
+					"ProgId=@QBC_PUBLISHER@.@QBC_NAME@.@QBC_FILE_EXTENSION@");
+			}
+		}
+	}
+
+	if (systemInfo.productType === "windows") {
+		var isStartMenuChecked = component.userInterface("StartMenuCheckBoxForm").StartMenuCheckBox.checked;
+		var isDesktopChecked = component.userInterface("DesktopCheckBoxForm").DesktopCheckBox.checked;
+		
+		if(isStartMenuChecked)
+		{
+			console.log("Create Start Menu Shortcut");
+			component.addOperation("CreateShortcut", "@QBC_TARGET_DIR_JS@/@QBC_PACKAGE_NAME@.exe", "@QBC_START_MENU_DIR_JS@/@QBC_PACKAGE_NAME@.lnk");	
+		}
+		if(isDesktopChecked)
+		{
+			console.log("Create Desktop Shortcut");
+			component.addOperation("CreateShortcut", "@QBC_TARGET_DIR_JS@/@QBC_PACKAGE_NAME@.exe", "@QBC_DESKTOP_DIR_JS@/@QBC_PACKAGE_NAME@.lnk");
+		}
+	}
+}
