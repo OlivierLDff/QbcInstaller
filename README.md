@@ -25,3 +25,31 @@ The goal of this project is to offer a simple CMake wrapper project to deploy bi
 ## Output
 
 * **QBC_OUTPUT_PATH**:  `/path/to/installer.exe`
+
+## Building
+
+Everything can be found in the `cmake` folder. This script will download and add project QBC into your current project hierarchy.
+
+```cmake
+IF( NOT QBC_REPOSITORY )
+	SET( QBC_REPOSITORY "https://github.com/ereimul/QBCInstaller.git" CACHE STRING "QBC repository, can be a local URL" FORCE )
+ENDIF()
+MESSAGE(STATUS "QBC repository folder: " ${QBC_REPOSITORY})
+
+IF( NOT DEFINED QBC_TAG )
+	SET( QBC_TAG master CACHE STRING "QBC git tag" FORCE )
+ENDIF()
+MESSAGE( STATUS "QBC repository tag: " ${QBC_TAG} )
+
+INCLUDE( ${PROJECT_SOURCE_DIR}/cmake/DownloadProject.cmake )
+
+DOWNLOAD_PROJECT(PROJ 	QBCInstaller
+	GIT_REPOSITORY 		${QBC_REPOSITORY}
+	GIT_TAG 			${QBC_TAG}
+	UPDATE_DISCONNECTED 1
+	QUIET
+	)
+
+ADD_SUBDIRECTORY( ${QBCInstaller_SOURCE_DIR} ${QBCInstaller_BINARY_DIR} )
+```
+
