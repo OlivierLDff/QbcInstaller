@@ -6,9 +6,10 @@ The goal of this project is to offer a simple CMake wrapper project to deploy bi
 
 * **QBC_DEPENDS_TARGET**: Target for which it will create an installer. The `TARGET_FILE_DIR` will be copied in the installer and then deploy, be sure the `TARGET_FILE_DIR` is only containing necessary stuff. *Default: ""*.
 * **QBC_PROJECT_NAME**: Name of the project. *Default: QtBinaryCreator*
+* **QBC_INSTALLER_TARGET_NAME**: Name of the Installer Target. *Default: ${QBC_DEPENDS_TARGET}InstallerX(64 or 32)*.
 * **QBC_VERBOSE**: Print configuration and binary creator verbose [ON OFF]. *Default: ON*
 * **QBC_ALL**: If on the target will depends on the make target ALL [ON OFF]. *Default: ON*
-* **QBC_NAME**: Name of the
+* **QBC_NAME**: Name of the product for which the installer will be created
 * **QBC_VERSION**: Version of the installer. *Default: 1.0.0*
 * **QBC_TITLE**: Installer Title. *Default: Install QBC_NAME*
 * **QBC_PUBLISHER**: Name of the publisher. *Default: Publisher*
