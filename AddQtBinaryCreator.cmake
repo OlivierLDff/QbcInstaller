@@ -60,8 +60,10 @@ macro(add_qt_binary_creator TARGET)
 		OUTPUT_DIR
 		)
 
+	SET(QBC_MULTI_VALUE_ARG )
+
 	 # parse the macro arguments
-	cmake_parse_arguments(ARGQBC "${QBC_OPTIONS}" "${QBC_ONE_VALUE_ARG}" ${ARGN})
+	cmake_parse_arguments(ARGQBC "${QBC_OPTIONS}" "${QBC_ONE_VALUE_ARG}" "${QBC_MULTI_VALUE_ARG}" ${ARGN})
 
     if(TARGET)
         set(QBC_DEPENDS_TARGET ${TARGET})
