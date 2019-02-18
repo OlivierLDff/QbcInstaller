@@ -177,6 +177,8 @@ macro(add_qt_binary_creator TARGET)
 	MESSAGE(STATUS "RELEASE_DATE:           ${QBC_RELEASE_DATE}")
 	MESSAGE(STATUS "QBC_X:                  ${QBC_X}")
 	MESSAGE(STATUS "CMAKE_SYSTEM_NAME:      ${CMAKE_SYSTEM_NAME}")
+	MESSAGE(STATUS "QBC_OUTPUT_DIR:         ${QBC_OUTPUT_DIR}")
+	MESSAGE(STATUS "QBC_BUILD_DIR:          ${QBC_BUILD_DIR}")
 	MESSAGE(STATUS "QtBinaryCreatorCMake End Configuration")
 
 	IF(${CMAKE_SYSTEM_NAME} STREQUAL "Windows")
@@ -208,20 +210,20 @@ macro(add_qt_binary_creator TARGET)
 	ENDIF(QBC_ICON_OUTPUT_NAME)
 
 	## CONFIG.XML
-	CONFIGURE_FILE(${QBC_SOURCE_DIR}/src/config.xml.in ${ARGQBC_BUILD_DIR}/config/config.xml @ONLY)
+	CONFIGURE_FILE(${QBC_SOURCE_DIR}/src/config.xml.in ${QBC_BUILD_DIR}/config/config.xml @ONLY)
 
 	## PACKAGE.XML
-	CONFIGURE_FILE(${QBC_SOURCE_DIR}/src/package.xml.in ${ARGQBC_BUILD_DIR}/packages/${QBC_PACKAGE}/meta/package.xml @ONLY)
+	CONFIGURE_FILE(${QBC_SOURCE_DIR}/src/package.xml.in ${QBC_BUILD_DIR}/packages/${QBC_PACKAGE}/meta/package.xml @ONLY)
 
-	CONFIGURE_FILE(${QBC_SOURCE_DIR}/src/desktopcheckboxform.ui ${ARGQBC_BUILD_DIR}/packages/${QBC_PACKAGE}/meta/desktopcheckboxform.ui COPYONLY)
-	CONFIGURE_FILE(${QBC_SOURCE_DIR}/src/startmenucheckboxform.ui ${ARGQBC_BUILD_DIR}/packages/${QBC_PACKAGE}/meta/startmenucheckboxform.ui COPYONLY)
-	CONFIGURE_FILE(${QBC_SOURCE_DIR}/src/registerfilecheckboxform.ui ${ARGQBC_BUILD_DIR}/packages/${QBC_PACKAGE}/meta/registerfilecheckboxform.ui COPYONLY)
+	CONFIGURE_FILE(${QBC_SOURCE_DIR}/src/desktopcheckboxform.ui ${QBC_BUILD_DIR}/packages/${QBC_PACKAGE}/meta/desktopcheckboxform.ui COPYONLY)
+	CONFIGURE_FILE(${QBC_SOURCE_DIR}/src/startmenucheckboxform.ui ${QBC_BUILD_DIR}/packages/${QBC_PACKAGE}/meta/startmenucheckboxform.ui COPYONLY)
+	CONFIGURE_FILE(${QBC_SOURCE_DIR}/src/registerfilecheckboxform.ui ${QBC_BUILD_DIR}/packages/${QBC_PACKAGE}/meta/registerfilecheckboxform.ui COPYONLY)
 
 	## INSTALLSCRIPT.JS
 	SET(QBC_TARGET_DIR_JS @TargetDir@)
 	SET(QBC_START_MENU_DIR_JS @StartMenuDir@)
 	SET(QBC_DESKTOP_DIR_JS @DesktopDir@)
-	CONFIGURE_FILE(${QBC_SOURCE_DIR}/src/installscript.qs.in ${ARGQBC_BUILD_DIR}/packages/${QBC_PACKAGE}/meta/installscript.qs @ONLY)
+	CONFIGURE_FILE(${QBC_SOURCE_DIR}/src/installscript.qs.in ${QBC_BUILD_DIR}/packages/${QBC_PACKAGE}/meta/installscript.qs @ONLY)
 
 	# ────────── BINARY CREATOR ────────────────
 
@@ -240,8 +242,8 @@ macro(add_qt_binary_creator TARGET)
 		COMMAND ${CMAKE_COMMAND} -E copy_directory $<TARGET_FILE_DIR:${QBC_DEPENDS_TARGET}> ${ARGQBC_BUILD_DIR}/packages/${QBC_PACKAGE}/data
 		COMMAND echo Launch binarycreator
 		COMMAND ${QT_INSTALLER_FRAMEWORK_DIR}/binarycreator
-			-c ${ARGQBC_BUILD_DIR}/config/config.xml
-			-p ${ARGQBC_BUILD_DIR}/packages
+			-c ${QBC_BUILD_DIR}/config/config.xml
+			-p ${QBC_BUILD_DIR}/packages
 			${QBC_VERBOSE}
 			${QBC_OUTPUT_DIR}
 		)
