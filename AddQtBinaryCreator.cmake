@@ -245,4 +245,4 @@ macro(add_qt_binary_creator TARGET)
 		)
 
 
-macro(add_qt_binary_creator TARGET)
+endmacro(add_qt_binary_creator)
