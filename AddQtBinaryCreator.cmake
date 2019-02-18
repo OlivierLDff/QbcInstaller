@@ -36,10 +36,12 @@ include(CMakeParseArguments)
 SET(QBC_FOUND ON CACHE BOOL "QtBinaryCreatorCMake have been found" FORCE)
 
 macro(add_qt_binary_creator TARGET)
+
 	SET(QBC_OPTIONS 
 		ALL
 		VERBOSE_INSTALLER
 		)
+
 	SET(QBC_ONE_VALUE_ARG 
 		NAME 
 		INSTALLER_NAME 
@@ -243,6 +245,5 @@ macro(add_qt_binary_creator TARGET)
 			${QBC_VERBOSE}
 			${QBC_OUTPUT_DIR}
 		)
-
 
 endmacro(add_qt_binary_creator)
