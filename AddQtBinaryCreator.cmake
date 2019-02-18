@@ -34,6 +34,7 @@ CMAKE_MINIMUM_REQUIRED( VERSION 3.1.0 )
 include(CMakeParseArguments)
 
 SET(QBC_FOUND ON CACHE BOOL "QtBinaryCreatorCMake have been found" FORCE)
+set(QBC_SOURCE_DIR ${CMAKE_CURRENT_LIST_DIR})
 
 macro(add_qt_binary_creator TARGET)
 
@@ -65,11 +66,7 @@ macro(add_qt_binary_creator TARGET)
 	 # parse the macro arguments
 	cmake_parse_arguments(ARGQBC "${QBC_OPTIONS}" "${QBC_ONE_VALUE_ARG}" "${QBC_MULTI_VALUE_ARG}" ${ARGN})
 
-    if(TARGET)
-        set(QBC_DEPENDS_TARGET ${TARGET})
-    else(TARGET)
-    	message(FATAL_ERROR "No target specified in macro add_qt_binary_creator ${TARGET}")
-    endif(TARGET)
+    set(QBC_DEPENDS_TARGET ${TARGET})
 
     if(ARGQBC_NAME)
         set(QBC_NAME ${ARGQBC_NAME})
@@ -180,26 +177,27 @@ macro(add_qt_binary_creator TARGET)
 	MESSAGE(STATUS "RELEASE_DATE:           ${QBC_RELEASE_DATE}")
 	MESSAGE(STATUS "QBC_X:                  ${QBC_X}")
 	MESSAGE(STATUS "CMAKE_SYSTEM_NAME:      ${CMAKE_SYSTEM_NAME}")
+	MESSAGE(STATUS "QtBinaryCreatorCMake End Configuration")
 
 	IF(${CMAKE_SYSTEM_NAME} STREQUAL "Windows")
 		SET( QT_INSTALLER_FRAMEWORK_DIR ${CMAKE_CURRENT_SOURCE_DIR}/bin/Win32 )
-		IF(ARGQBC_ICON AND NOT ${QBC_ICON_OUTPUT_EXT} STREQUAL "ico")
-			MESSAGE(FATAL_ERROR "${ARGQBC_ICON} isn't a .ico file")
-		ENDIF(ARGQBC_ICON AND NOT ${QBC_ICON_OUTPUT_EXT} STREQUAL "ico")
+		IF(ARGQBC_ICON AND NOT ${QBC_ICON_OUTPUT_EXT} STREQUAL ".ico")
+			MESSAGE(FATAL_ERROR "${ARGQBC_ICON} isn't a .ico file (${QBC_ICON_OUTPUT_EXT})")
+		ENDIF(ARGQBC_ICON AND NOT ${QBC_ICON_OUTPUT_EXT} STREQUAL ".ico")
 	ENDIF(${CMAKE_SYSTEM_NAME} STREQUAL "Windows")
 
 	IF(${CMAKE_SYSTEM_NAME} STREQUAL "Linux")
 		SET( QT_INSTALLER_FRAMEWORK_DIR ${CMAKE_CURRENT_SOURCE_DIR}/bin/Linux )
-		IF(ARGQBC_ICON AND NOT ${QBC_ICON_OUTPUT_EXT} STREQUAL "png")
+		IF(ARGQBC_ICON AND NOT ${QBC_ICON_OUTPUT_EXT} STREQUAL ".png")
 			MESSAGE(FATAL_ERROR "${ARGQBC_ICON} isn't a .png file")
-		ENDIF(ARGQBC_ICON AND NOT ${QBC_ICON_OUTPUT_EXT} STREQUAL "png")
+		ENDIF(ARGQBC_ICON AND NOT ${QBC_ICON_OUTPUT_EXT} STREQUAL ".png")
 	ENDIF(${CMAKE_SYSTEM_NAME} STREQUAL "Linux")
 
 	IF(${CMAKE_SYSTEM_NAME} STREQUAL "Darwin")
 		SET( QT_INSTALLER_FRAMEWORK_DIR ${CMAKE_CURRENT_SOURCE_DIR}/bin/Darwin )
-		IF(ARGQBC_ICON AND NOT ${QBC_ICON_OUTPUT_EXT} STREQUAL "icns")
+		IF(ARGQBC_ICON AND NOT ${QBC_ICON_OUTPUT_EXT} STREQUAL ".icns")
 			MESSAGE(FATAL_ERROR "${ARGQBC_ICON} isn't a .icns file")
-		ENDIF(ARGQBC_ICON AND NOT ${QBC_ICON_OUTPUT_EXT} STREQUAL "icns")
+		ENDIF(ARGQBC_ICON AND NOT ${QBC_ICON_OUTPUT_EXT} STREQUAL ".icns")
 	ENDIF(${CMAKE_SYSTEM_NAME} STREQUAL "Darwin")
 
 # ────────── CONFIGURE FILES ────────────────
@@ -210,20 +208,20 @@ macro(add_qt_binary_creator TARGET)
 	ENDIF(QBC_ICON_OUTPUT_NAME)
 
 	## CONFIG.XML
-	CONFIGURE_FILE(${CMAKE_CURRENT_SOURCE_DIR}/src/config.xml.in ${ARGQBC_BUILD_DIR}/config/config.xml @ONLY)
+	CONFIGURE_FILE(${QBC_SOURCE_DIR}/src/config.xml.in ${ARGQBC_BUILD_DIR}/config/config.xml @ONLY)
 
 	## PACKAGE.XML
-	CONFIGURE_FILE(${CMAKE_CURRENT_SOURCE_DIR}/src/package.xml.in ${ARGQBC_BUILD_DIR}/packages/${QBC_PACKAGE}/meta/package.xml @ONLY)
+	CONFIGURE_FILE(${QBC_SOURCE_DIR}/src/package.xml.in ${ARGQBC_BUILD_DIR}/packages/${QBC_PACKAGE}/meta/package.xml @ONLY)
 
-	CONFIGURE_FILE(${CMAKE_CURRENT_SOURCE_DIR}/src/desktopcheckboxform.ui ${ARGQBC_BUILD_DIR}/packages/${QBC_PACKAGE}/meta/desktopcheckboxform.ui COPYONLY)
-	CONFIGURE_FILE(${CMAKE_CURRENT_SOURCE_DIR}/src/startmenucheckboxform.ui ${ARGQBC_BUILD_DIR}/packages/${QBC_PACKAGE}/meta/startmenucheckboxform.ui COPYONLY)
-	CONFIGURE_FILE(${CMAKE_CURRENT_SOURCE_DIR}/src/registerfilecheckboxform.ui ${ARGQBC_BUILD_DIR}/packages/${QBC_PACKAGE}/meta/registerfilecheckboxform.ui COPYONLY)
+	CONFIGURE_FILE(${QBC_SOURCE_DIR}/src/desktopcheckboxform.ui ${ARGQBC_BUILD_DIR}/packages/${QBC_PACKAGE}/meta/desktopcheckboxform.ui COPYONLY)
+	CONFIGURE_FILE(${QBC_SOURCE_DIR}/src/startmenucheckboxform.ui ${ARGQBC_BUILD_DIR}/packages/${QBC_PACKAGE}/meta/startmenucheckboxform.ui COPYONLY)
+	CONFIGURE_FILE(${QBC_SOURCE_DIR}/src/registerfilecheckboxform.ui ${ARGQBC_BUILD_DIR}/packages/${QBC_PACKAGE}/meta/registerfilecheckboxform.ui COPYONLY)
 
 	## INSTALLSCRIPT.JS
 	SET(QBC_TARGET_DIR_JS @TargetDir@)
 	SET(QBC_START_MENU_DIR_JS @StartMenuDir@)
 	SET(QBC_DESKTOP_DIR_JS @DesktopDir@)
-	CONFIGURE_FILE(${CMAKE_CURRENT_SOURCE_DIR}/src/installscript.qs.in ${ARGQBC_BUILD_DIR}/packages/${QBC_PACKAGE}/meta/installscript.qs @ONLY)
+	CONFIGURE_FILE(${QBC_SOURCE_DIR}/src/installscript.qs.in ${ARGQBC_BUILD_DIR}/packages/${QBC_PACKAGE}/meta/installscript.qs @ONLY)
 
 	# ────────── BINARY CREATOR ────────────────
 
