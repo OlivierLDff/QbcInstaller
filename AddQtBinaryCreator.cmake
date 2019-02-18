@@ -245,7 +245,7 @@ macro(add_qt_binary_creator TARGET)
 			-c ${QBC_BUILD_DIR}/config/config.xml
 			-p ${QBC_BUILD_DIR}/packages
 			${QBC_VERBOSE}
-			${QBC_OUTPUT_DIR}
+			${QBC_OUTPUT_DIR}/${QBC_INSTALLER_TARGET_NAME}
 		)
 
 endmacro(add_qt_binary_creator)
