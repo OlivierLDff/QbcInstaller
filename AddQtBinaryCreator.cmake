@@ -31,7 +31,9 @@
 
 CMAKE_MINIMUM_REQUIRED( VERSION 3.1.0 )
 
-SET(QBC_FOUND ON CACHE BOOL "QtBinaryCreatorCMake have been found")
+include(CMakeParseArguments)
+
+SET(QBC_FOUND ON CACHE BOOL "QtBinaryCreatorCMake have been found" FORCE)
 
 macro(add_qt_binary_creator TARGET)
 	SET(QT_WINDOWS_OPTIONS 
