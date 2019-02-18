@@ -43,7 +43,7 @@ macro(add_qt_binary_creator TARGET)
 		)
 
 	SET(QBC_ONE_VALUE_ARG 
-		APP_NAME 
+		NAME 
 		INSTALLER_NAME 
 		VERSION 
 		PUBLISHER 
@@ -69,8 +69,8 @@ macro(add_qt_binary_creator TARGET)
     	message(FATAL_ERROR "No target specified in macro add_qt_binary_creator")
     endif()
 
-    if(ARGQBC_APP_NAME)
-        set(QBC_NAME ${ARGQBC_APP_NAME})
+    if(ARGQBC_NAME)
+        set(QBC_NAME ${ARGQBC_NAME})
     else()
         set(QBC_NAME ${TARGET})
     endif()
