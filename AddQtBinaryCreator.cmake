@@ -67,9 +67,9 @@ macro(add_qt_binary_creator TARGET)
 
     if(TARGET)
         set(QBC_DEPENDS_TARGET ${TARGET})
-    else()
-    	message(FATAL_ERROR "No target specified in macro add_qt_binary_creator")
-    endif()
+    else(TARGET)
+    	message(FATAL_ERROR "No target specified in macro add_qt_binary_creator ${TARGET}")
+    endif(TARGET)
 
     if(ARGQBC_NAME)
         set(QBC_NAME ${ARGQBC_NAME})
