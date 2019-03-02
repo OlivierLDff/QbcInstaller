@@ -86,12 +86,12 @@ Component.prototype.createOperations = function()
 		if(isStartMenuChecked)
 		{
 			console.log("Create Start Menu Shortcut");
-			component.addOperation("CreateShortcut", "@QBC_TARGET_DIR_JS@/@QBC_PACKAGE_NAME@.exe", "@QBC_START_MENU_DIR_JS@/@QBC_PACKAGE_NAME@.lnk");	
+			component.addOperation("CreateShortcut", "@QBC_TARGET_DIR_JS@/@QBC_PACKAGE_NAME@.exe", "@QBC_START_MENU_DIR_JS@/@QBC_PACKAGE_NAME_SHORTCUT@.lnk");	
 		}
 		if(isDesktopChecked)
 		{
 			console.log("Create Desktop Shortcut");
-			component.addOperation("CreateShortcut", "@QBC_TARGET_DIR_JS@/@QBC_PACKAGE_NAME@.exe", "@QBC_DESKTOP_DIR_JS@/@QBC_PACKAGE_NAME@.lnk");
+			component.addOperation("CreateShortcut", "@QBC_TARGET_DIR_JS@/@QBC_PACKAGE_NAME@.exe", "@QBC_DESKTOP_DIR_JS@/@QBC_PACKAGE_NAME_SHORTCUT@.lnk");
 		}
 	}
 }
