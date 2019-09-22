@@ -34,7 +34,9 @@ cmake_minimum_required(VERSION 3.0.0 FATAL_ERROR)
 include(CMakeParseArguments)
 
 set(QBC_FOUND ON CACHE BOOL "QtBinaryCreatorCMake have been found" FORCE)
-set(QBC_SOURCE_DIR ${CMAKE_CURRENT_LIST_DIR})
+set(QBC_SOURCE_DIR ${CMAKE_CURRENT_LIST_DIR} CACHE STRING "Current CMakeList's directory" FORCE)
+
+message(STATUS "Include add_qt_binary_creator in your project. Source dir is ${QBC_SOURCE_DIR}")
 
 macro(add_qt_binary_creator TARGET)
 
@@ -191,6 +193,7 @@ macro(add_qt_binary_creator TARGET)
         message(STATUS "CMAKE_SYSTEM_NAME:      ${CMAKE_SYSTEM_NAME}")
         message(STATUS "QBC_OUTPUT_DIR:         ${QBC_OUTPUT_DIR}")
         message(STATUS "QBC_BUILD_DIR:          ${QBC_BUILD_DIR}")
+        message(STATUS "QBC_SOURCE_DIR:         ${QBC_SOURCE_DIR}")
         message(STATUS "---- End QtBinaryCreatorCMake Configuration ----")
     endif() # ARGQBC_VERBOSE_INSTALLER
 
@@ -220,7 +223,7 @@ macro(add_qt_binary_creator TARGET)
     ## ICON
     if(QBC_ICON_OUTPUT_NAME)
         configure_file(${QBC_ICON_PATH} ${QBC_BUILD_DIR}/config/${QBC_ICON_OUTPUT_NAME} COPYONLY)
-    endif(QBC_ICON_OUTPUT_NAME)
+    endif() # QBC_ICON_OUTPUT_NAME
 
     ## CONFIG.XML
     configure_file(${QBC_SOURCE_DIR}/src/config.xml.in ${QBC_BUILD_DIR}/config/config.xml @ONLY)
