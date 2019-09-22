@@ -13,7 +13,12 @@ This utility has been developed for my own needs. Don't hesitate to use / share 
 All you need to do is include the cmake script then call `add_qt_binary_creator` macro.
 
 ```cmake
-INCLUDE(QtBinaryCreatorCMake/AddQtBinaryCreator.cmake)
+FetchContent_Declare(
+            Qbc
+            GIT_REPOSITORY "https://github.com/OlivierLDff/QbcInstaller"
+            GIT_TAG        master
+        )
+    FetchContent_MakeAvailable(Qbc)
 add_qt_binary_creator(MyApp)
 ```
 
