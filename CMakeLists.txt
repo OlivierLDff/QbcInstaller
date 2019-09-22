@@ -254,14 +254,14 @@ macro(add_qt_binary_creator TARGET)
     add_custom_target(${QBC_INSTALLER_TARGET_NAME}
         ${QBC_ALL}
         DEPENDS ${QBC_DEPENDS_TARGET} ${QBC_ADDITIONNAL_DEPENDS}
-        COMMAND echo Copy $<TARGET_FILE_DIR:${QBC_DEPENDS_TARGET}> to ${QBC_BUILD_DIR}/packages/${QBC_PACKAGE}/data
         COMMAND ${CMAKE_COMMAND} -E copy_directory $<TARGET_FILE_DIR:${QBC_DEPENDS_TARGET}> ${QBC_BUILD_DIR}/packages/${QBC_PACKAGE}/data
-        COMMAND echo "Launch binarycreator in (${QT_INSTALLER_FRAMEWORK_DIR}), installer will be in ${QBC_OUTPUT_DIR}"
         COMMAND ${QT_INSTALLER_FRAMEWORK_DIR}/binarycreator
             -c ${QBC_BUILD_DIR}/config/config.xml
             -p ${QBC_BUILD_DIR}/packages
             ${QBC_VERBOSE}
             ${QBC_OUTPUT_DIR}/${QBC_INSTALLER_TARGET_NAME}
+        COMMENT "Copy $<TARGET_FILE_DIR:${QBC_DEPENDS_TARGET}> to ${QBC_BUILD_DIR}/packages/${QBC_PACKAGE}/data then Launch binarycreator in (${QT_INSTALLER_FRAMEWORK_DIR}), installer will be in ${QBC_OUTPUT_DIR}"
+
    )
 
 endmacro() # add_qt_binary_creator
