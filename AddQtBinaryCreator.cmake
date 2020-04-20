@@ -31,8 +31,7 @@
 
 include(CMakeParseArguments)
 
-set(QBC_FOUND ON CACHE BOOL "QtBinaryCreatorCMake have been found" FORCE)
-set(QBC_SOURCE_DIR ${CMAKE_CURRENT_LIST_DIR} CACHE STRING "Current CMakeList's directory" FORCE)
+set(QBC_SOURCE_DIR ${CMAKE_CURRENT_LIST_DIR})
 
 message(STATUS "Include add_qt_binary_creator in your project. Source dir is ${QBC_SOURCE_DIR}")
 
