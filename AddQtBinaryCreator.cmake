@@ -35,7 +35,7 @@ set(QBC_SOURCE_DIR ${CMAKE_CURRENT_LIST_DIR})
 
 message(STATUS "Include add_qt_binary_creator in your project. Source dir is ${QBC_SOURCE_DIR}")
 
-macro(add_qt_binary_creator TARGET)
+function(add_qt_binary_creator TARGET)
 
     set(QBC_OPTIONS
         ALL
@@ -62,7 +62,7 @@ macro(add_qt_binary_creator TARGET)
 
     set(QBC_MULTI_VALUE_ARG)
 
-     # parse the macro arguments
+     # parse the function arguments
     cmake_parse_arguments(ARGQBC "${QBC_OPTIONS}" "${QBC_ONE_VALUE_ARG}" "${QBC_MULTI_VALUE_ARG}" ${ARGN})
 
     set(QBC_DEPENDS_TARGET ${TARGET})
@@ -261,4 +261,4 @@ macro(add_qt_binary_creator TARGET)
 
    )
 
-endmacro() # add_qt_binary_creator
+endfunction() # add_qt_binary_creator
