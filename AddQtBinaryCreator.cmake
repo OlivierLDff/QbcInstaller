@@ -58,6 +58,7 @@ function(add_qt_binary_creator TARGET)
         RELEASE_DATE
         BUILD_DIR
         OUTPUT_DIR
+        OUTPUT_TARGET
        )
 
     set(QBC_MULTI_VALUE_ARG)
@@ -113,7 +114,7 @@ function(add_qt_binary_creator TARGET)
     if(ARGQBC_RUN_PROGRAM)
         set(QBC_PACKAGE_NAME ${ARGQBC_RUN_PROGRAM})
     else() # ARGQBC_RUN_PROGRAM
-        set(QBC_PACKAGE_NAME ${QBC_NAME})
+        set(QBC_PACKAGE_NAME ${TARGET})
     endif() # ARGQBC_RUN_PROGRAM
     set(QBC_PACKAGE_NAME_SHORTCUT ${QBC_NAME})
     set(QBC_PACKAGE_VERSION ${QBC_VERSION})
@@ -147,19 +148,19 @@ function(add_qt_binary_creator TARGET)
     if(ARGQBC_RUN_PROGRAM)
         set(QBC_RUN_PROGRAM @TargetDir@/${ARGQBC_RUN_PROGRAM})
     else() # ARGQBC_RUN_PROGRAM
-        set(QBC_RUN_PROGRAM @TargetDir@/${QBC_NAME})
+        set(QBC_RUN_PROGRAM @TargetDir@/${TARGET})
     endif() # ARGQBC_RUN_PROGRAM
 
     if(ARGQBC_OUTPUT_DIR)
         set(QBC_OUTPUT_DIR ${ARGQBC_OUTPUT_DIR})
     else() # ARGQBC_OUTPUT_DIR
-        set(QBC_OUTPUT_DIR ${PROJECT_BINARY_DIR})
+        set(QBC_OUTPUT_DIR ${CMAKE_CURRENT_BINARY_DIR})
     endif() # ARGQBC_OUTPUT_DIR
 
     if(ARGQBC_BUILD_DIR)
         set(QBC_BUILD_DIR ${ARGQBC_BUILD_DIR})
     else() # ARGQBC_BUILD_DIR
-        set(QBC_BUILD_DIR ${PROJECT_BINARY_DIR}/${QBC_INSTALLER_TARGET_NAME})
+        set(QBC_BUILD_DIR ${CMAKE_CURRENT_BINARY_DIR}/${QBC_INSTALLER_TARGET_NAME})
     endif() # ARGQBC_BUILD_DIR
 
     if(ARGQBC_PRODUCT_URL)
@@ -248,6 +249,10 @@ function(add_qt_binary_creator TARGET)
         set(QBC_VERBOSE -v)
     endif() # ARGQBC_VERBOSE_INSTALLER
 
+    if(ARGQBC_OUTPUT_TARGET)
+        set(${ARGQBC_OUTPUT_TARGET} ${QBC_INSTALLER_TARGET_NAME} PARENT_SCOPE)
+    endif()
+
     add_custom_target(${QBC_INSTALLER_TARGET_NAME}
         ${QBC_ALL}
         DEPENDS ${QBC_DEPENDS_TARGET} ${QBC_ADDITIONNAL_DEPENDS}
@@ -256,7 +261,7 @@ function(add_qt_binary_creator TARGET)
             -c ${QBC_BUILD_DIR}/config/config.xml
             -p ${QBC_BUILD_DIR}/packages
             ${QBC_VERBOSE}
-            ${QBC_OUTPUT_DIR}/${QBC_INSTALLER_TARGET_NAME}
+            ${QBC_OUTPUT_DIR}/${QBC_INSTALLER_TARGET_NAME}$<CONFIG>
         COMMENT "Copy $<TARGET_FILE_DIR:${QBC_DEPENDS_TARGET}> to ${QBC_BUILD_DIR}/packages/${QBC_PACKAGE}/data then Launch binarycreator in (${QT_INSTALLER_FRAMEWORK_DIR}), installer will be in ${QBC_OUTPUT_DIR}"
 
    )
