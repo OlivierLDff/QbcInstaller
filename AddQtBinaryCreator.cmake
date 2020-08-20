@@ -138,7 +138,7 @@ function(add_qt_binary_creator TARGET)
         set(QBC_START_MENU ${QBC_PUBLISHER})
     endif() # ARGQBC_START_MENU
 
-    if(ARGQBC_ICON)
+    if(ARGQBC_ICON AND EXISTS ${ARGQBC_ICON})
         set(QBC_ICON_PATH ${ARGQBC_ICON})
         get_filename_component(QBC_ICON_OUTPUT_NAME ${QBC_ICON_PATH} NAME)
         get_filename_component(QBC_ICON_OUTPUT_NAME_WE ${QBC_ICON_PATH} NAME_WE)
@@ -219,7 +219,7 @@ function(add_qt_binary_creator TARGET)
     # ────────── CONFIGURE FILES ────────────────
 
     ## ICON
-    if(QBC_ICON_OUTPUT_NAME)
+    if(QBC_ICON_OUTPUT_NAME AND EXISTS ${QBC_ICON_PATH})
         configure_file(${QBC_ICON_PATH} ${QBC_BUILD_DIR}/config/${QBC_ICON_OUTPUT_NAME} COPYONLY)
     endif() # QBC_ICON_OUTPUT_NAME
 
