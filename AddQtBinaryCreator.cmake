@@ -167,6 +167,10 @@ function(add_qt_binary_creator TARGET)
         set(QBC_PRODUCT_URL ${ARGQBC_PRODUCT_URL})
     endif() # ARGQBC_PRODUCT_URL
 
+    if(ARGQBC_FILE_EXTENSION)
+        set(QBC_FILE_EXTENSION ${ARGQBC_FILE_EXTENSION})
+    endif()
+
     # ────────── LOG CONFIGURATION ────────────────
 
     if(ARGQBC_VERBOSE_INSTALLER)
@@ -180,7 +184,7 @@ function(add_qt_binary_creator TARGET)
         message(STATUS "PRODUCT_URL:            ${ARGQBC_PRODUCT_URL}")
         message(STATUS "PACKAGE:                ${QBC_PACKAGE}")
         message(STATUS "START_MENU:             ${QBC_START_MENU}")
-        message(STATUS "FILE_EXTENSION:         ${ARGQBC_FILE_EXTENSION}")
+        message(STATUS "FILE_EXTENSION:         ${QBC_FILE_EXTENSION}")
         message(STATUS "ICON:                   ${QBC_ICON_PATH}")
         message(STATUS "DEPENDS:                ${ARGQBC_DEPENDS}")
         message(STATUS "ALL:                    ${ARGQBC_ALL}")
